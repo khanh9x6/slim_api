@@ -13,7 +13,11 @@ Cách sử dụng api
 
 Lấy toàn bộ tin tức
 
-GET http://localhost:8080/news
+	GET http://localhost:8080/news
+
+	GET tin tuc theo id
+
+	http://localhost:8080/news/{id}
 
 lấy tin tức theo tags
 

@@ -5,18 +5,24 @@ use Slim\Http\Response;
 
 // Routes
 
-// $app->get('/[{name}]', function (Request $request, Response $response, array $args) {
-//     // Sample log message
-//     $this->logger->info("Slim-Skeleton '/' route");
-
-//     // Render index view
-//     return $this->renderer->render($response, 'index.phtml', $args);
-// });
 $app->get('/news', function (Request $request, Response $response, array $args) {
 	$sth = getConnection()->prepare('SELECT DISTINCT n.* , c.name as cate_name , c.slug as cate_slug , a.name as author_name , a.username as author_username FROM `news` as n INNER JOIN `categories`as c On n.cate_id = c.id INNER JOIN authors as a ON n.author_id = a.id');
 	$sth->execute();
 	$news = $sth->fetchAll();
 	return $response->withJson(array('data' => array('news' => $news)));
+});
+//get news by id
+$app->get('/news/{id}', function (Request $request, Response $response, array $args) {
+	$id = $args['id'];
+	$sth = getConnection()->prepare("SELECT DISTINCT n.* , c.name as cate_name , c.slug as cate_slug , a.name as author_name , a.username as author_username FROM `news` as n INNER JOIN `categories`as c On n.cate_id = c.id INNER JOIN authors as a ON n.author_id = a.id where n.id = $id");
+	$sth->execute();
+	$news = $sth->fetchAll();
+	$sql_tag = "SELECT tags.* FROM tags INNER JOIN tags_news on tags_news.tags_id = tags.id where tags_news.news_id = $id";
+	//var_dump($sql_tag);die;
+	$sth = getConnection()->prepare($sql_tag);
+	$sth->execute();
+	$tags = $sth->fetchAll();
+	return $response->withJson(array('data' => array('news' => $news , 'tags' => $tags)));
 });
 //get by tags
 $app->get('/tags/{param}', function (Request $request, Response $response, array $args) {
