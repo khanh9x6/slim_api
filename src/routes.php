@@ -84,3 +84,12 @@ $app->get('/categories/{param}', function (Request $request, Response $response,
 	$news = $sth->fetchAll();
 	return $response->withJson(array('data' => array('news' => $news)));
 });
+$app->post('/news/{id}/comment', function (Request $request, Response $response, array $args) {
+	$id = $args['id'];
+	$input = $request->getParsedBody();
+	$comment = $input['comment'];
+	$name = $input['name'];
+	$sql = "INSERT INTO `comment` (`id`, `name`, `content`, `news_id`) VALUES (NULL, '$name', '$comment', '$id')";
+	$sth = getConnection()->prepare($sql);
+	return $sth->execute();
+});
