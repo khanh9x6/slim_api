@@ -1,27 +1,41 @@
-# Slim Framework 3 Skeleton Application
+bước 1: import db
 
-Use this skeleton application to quickly setup and start working on a new Slim Framework 3 application. This application uses the latest Slim 3 with the PHP-View template renderer. It also uses the Monolog logger.
+tạo csdl tên news -> sau đó import file news.sql
 
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
+Bước 2 : run server
 
-## Install the Application
+chạy file run.bat
 
-Run this command from the directory in which you want to install your new Slim Framework application.
+==========================
 
-    php composer.phar create-project slim/slim-skeleton [my-app-name]
 
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
+Cách sử dụng api
 
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writeable.
+Lấy toàn bộ tin tức
 
-To run the application in development, you can run these commands 
+	GET http://localhost:8080/news
 
-	cd [my-app-name]
-	php composer.phar start
+	GET tin tuc theo id
 
-Run this command in the application directory to run the test suite
+	http://localhost:8080/news/{id}
 
-	php composer.phar test
+lấy tin tức theo tags
 
-That's it! Now go build something cool.
+GET http://localhost:8080/tags/{param}
+
+trong đó param là id của tag hoặc slug của tag
+
+lấy tin tức theo category
+
+GET http://localhost:8080/categories/{param}
+trong đó param là id của tag hoặc slug của category
+
+
+=====
+Comment
+
+POST http://localhost:8080/news/{id}/comment
+	id là id của bài viết
+	trong đó gửi đi
+	name là tên người comment
+	content là nội dung comment
